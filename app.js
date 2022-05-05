@@ -31,9 +31,9 @@ const friendData = [
     },
 ];
 
-console.log(friendData);
+// console.log(friendData);
 
-addMushroomButton.addEventListener('click', (e) => {
+addMushroomButton.addEventListener('click', () => {
     if (Math.random() > 0.5) {
         alert('found a mushroom!');
 
@@ -47,9 +47,9 @@ addMushroomButton.addEventListener('click', (e) => {
 addFriendButton.addEventListener('click', () => {
     // get the name from the input
     // create a new friend object
-
+    const friendName = friendInputEl.value;
     const newFriend = {
-        name: friendInputEl.value,
+        name: friendName || 'Stranger',
         satisfaction: 1,
     };
     // push it into the friends state array, passed in as an argument
@@ -64,17 +64,29 @@ function displayFriends() {
     // clear out the friends in DOM
     friendsEl.textContent = '';
     // for each friend in state . . .
-    for (let booger of friendData) {
+    for (let friend of friendData) {
         // use renderFriend to make a friendEl
-        const friendEl = renderFriend(booger);
+        const friendEl = renderFriend(friend);
 
-        friendsEl.append(friendEl);
+
         //     this is a clickable list, so . . .
         //     add an event listener to each friend
-        //         and if the friend's satisfaction level is below 3 and you have mushrooms left
+        friendEl.addEventListener('click', () => {
+            if (friend.satisfaction < 3 && mushroomCount > 0) {
+                friend.satisfaction++;
+                mushroomCount--;
+                displayFriends();
+                displayMushrooms();
+            } else if 
+            (mushroomCount === 0) {
+                alert('ya played yourself');
+            }            
+        });
+        friendsEl.append(friendEl);           
+
+     //         and if the friend's satisfaction level is below 3 and you have mushrooms left
         //             increment the friends satisfaction and decrement your mushrooms
         //             then display your friends and mushrooms with the updated state
-        
         // append the friendEl to the friends list in DOM
     }
 }
